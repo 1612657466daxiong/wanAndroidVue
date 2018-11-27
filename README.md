@@ -2,20 +2,12 @@
 
 > a android app project by vue frame
 
-## Build Setup
+### 通过制作这个demo去学习Vue 之前制作过阿里mPaas框架的WANAndroid APP去学习调研mPaas框架
+***
+### 步骤
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+1.使用WebStorm+node.js搭建项目
+2.通过vue cli 脚手架 webpackage 自动创建项目以及项目结构
+3.路由使用Vue 自带Router 通过npm安装
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
