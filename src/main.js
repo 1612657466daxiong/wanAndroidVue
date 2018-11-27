@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Toast from  'components/toast/index'
 import * as axios from "axios";
 
 Vue.use(Toast)
