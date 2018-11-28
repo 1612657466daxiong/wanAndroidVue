@@ -5,26 +5,27 @@
       <p class="slogan">洋参-Android开发社区</p>
     </div>
     <div>
-      <input class="accountClass" maxlength="30" type="text" v-model="loginFormInline.username" placeholder="请输入账号"/>
+      <input class="accountClass" maxlength="30" v-text="doraemon" type="text" v-model="loginFormInline.username" placeholder="请输入账号">
       <div class="passwordContent">
         <input class="passwordClass" :type="viewPassword" v-model="loginFormInline.password" placeholder="请输入密码" maxlength="16">
         <img v-if="isShowEye" :src="theEye" class="passwordEye" @click="handleEyeAvailable"/>
       </div>
     </div>
     <div style="display: flex;justify-content: space-between;width: 300px;margin: 15px auto 0 auto;">
-      <a style="color: #999999;font-size: 14px">没账号<span style="color: #0BAD47;font-size: 14px" @click="goRegister">去注册一个</span></a>
-      <span style="color: #0BAD47;font-size: 14px" @click="goForgetPassword">忘记密码</span>
+      <a style="color: #999999;font-size: 14px">没账号，<span style="color: #0BAD47;font-size: 14px" @click="goRegister">去注册一个</span></a>
+      <span style="color: #0BAD47;font-size: 14px" @click="goForgetPassword">忘记密码？</span>
     </div>
     <div class="loginButton">
       <button v-if="!loginBtnAvailable" class="loginNoBtn">登录</button>
-      <button v-if="loginBtnAvailable"class="loginBtn" @click="handleSubmit">登录</button>
+      <button  v-if="loginBtnAvailable" class="loginBtn" @click="handleSubmit">登录</button>
     </div>
     <div style="width: 60px;height: 60px;position: absolute;top: 20px;left: 10px" @click="goback">
       <img style="width: 30px;height: 35px;float: left" src="../assets/login/ic_bar_back_white.png">
     </div>
   </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
+  import Regex from '../utils/regex'
   export default {
     data(){
       return{
@@ -32,15 +33,17 @@
         viewPassword:'password',
         theEye:'../assets/icon_mima_xianshi.png',
         loginBtnAvailable:false,
+        isAccount:false,
+        isPaw:false,
         loginFormInline:{
-          username: "",
-          id:"",
-          password:''
+          username: "doraemon",
+          password:'123456789'
         }
       }
     },
     mounted(){
       this.getLoginHeight();//获取设备高度设置界面高度
+      // this.initLogin();
     },
     methods:{
       getLoginHeight(){
@@ -69,37 +72,73 @@
       },
       handleSubmit(){
         let that = this;
-        this.$Toast.loading(that.$t('message.mobileLoginModalText.loginInText'))
+        this.$Toast.loading("登录")
         let sendInfo = {
-          account:this.loginFormInline.user,
+          username:this.loginFormInline.username,
           password:this.loginFormInline.password,
-          accountType:1
         };
-        this.encryption(sendInfo).then((sendInfo)=>{
-          that.$http.post('/auth/login',sendInfo).then((response)=>{
-            if(response.data.code===200){
-              let UserInfo = response.data.data;
-              UserInfo.account = sendInfo.account;
-              UserInfo.accountType = sendInfo.accountType;
-              UserInfo = JSON.stringify(UserInfo);
-              window.sessionStorage.setItem('UserInfo',UserInfo);
-              that.getPersonalInfo();
-              try {
-                // window.webkit.messageHandlers.loginSuccess.postMessage(UserInfo)
-              } catch (e) {
-                // window.WebViewJavascriptBridge.callHandler('loginSuccess', UserInfo)
-              }finally {
-                that.loginResult(that.$t('message.mobileLoginModalText.loginSuccess'),1)
-              }
-            }else {
-              let msg = that.Regex.isNull(response.data.message)?that.$t('message.mobileLoginModalText.loginFailure'):response.data.message
-              that.loginResult(msg,0)
+        this.encryption(sendInfo)
+        //   .then((sendInfo)=>{
+        //   that.$http.post('user/login',sendInfo,{
+        //     headers:{
+        //       'Content-Type': 'application/x-www-form-urlencoded'
+        //     }
+        //   }).then((response)=>{
+        //
+        //     console.log(response.data);
+        //     if(response.data.data.errorCode===0){
+        //       let UserInfo = response.data.data;
+        //       UserInfo.username = sendInfo.username;
+        //       UserInfo.password = sendInfo.password;
+        //       UserInfo = JSON.stringify(UserInfo);
+        //       window.sessionStorage.setItem('UserInfo',UserInfo);
+        //       // that.getPersonalInfo();
+        //       console.log(response.data);
+        //       try {
+        //         window.webkit.messageHandlers.loginSuccess.postMessage(UserInfo)
+        //       } catch (e) {
+        //         window.WebViewJavascriptBridge.callHandler('loginSuccess', UserInfo)
+        //       }finally {
+        //         that.loginResult("登录成功",1)
+        //       }
+        //     }else {
+        //       let msg = that.Regex.isNull(response.data.message)?"登录失败":response.data.message
+        //       that.loginResult(msg,0)
+        //     }
+        //   }).catch( (error) =>{
+        //     console.log(error);
+        //     that.loginResult("登录失败",2)
+        //   });
+        // })
+      },
+
+      encryption(sendInfo){
+        let that = this;
+        const promise = new Promise((resolve,reject)=>{
+          that.$http.post(`user/login`,sendInfo,{
+            headers:{
+              'Content-Type': 'application/x-www-form-urlencoded'
             }
-          }).catch( (error) =>{
+          }).then((response)=>{
+            console.log(response);
+            if(response.status == 200){
+              console.log(response.data);
+              let slatKey = String(response.data.data.slatKey);
+              // sendInfo.password = that.md5(slatKey.slice(0,8) + sendInfo.password + slatKey.slice(8))
+              resolve(sendInfo)
+              that.loginResult("登录成功",1)
+            }
+            else{
+              let msg = this.Regex.isNull(response.data.message)?"登录失败":response.data.message
+              that.loginResult(msg,0)
+              reject()
+            }
+          }).catch(function (error) {
+            that.loginResult("登录失败",2)
             console.log(error);
-            that.loginResult(that.$t('message.mobileLoginModalText.loginFailure'),2)
           });
-        })
+        });
+        return promise
       },
       getPersonalInfo(){
         this.$http.get('/personal/info').then((response) => {
@@ -122,7 +161,57 @@
           console.log(error);
         });
       },
+      loginResult(message,type){
+        if (type===1){
+          this.$Toast.success(message)
+        }else if(type===2){
+          this.$Toast.fail(message)
+        }else {
+          this.$Toast.Dismiss()
+          this.$Toast(message)
+          return
+        }
+        setTimeout(()=>{
+          this.$Toast.Dismiss()
+          if (type===1){
+            this.$router.back()
+          }else if(type===2){
+          }else {
+            this.$Toast(message)
+          }
+        },1000)
+      }
 
+    },
+    watch:{
+      'loginFormInline.password':function(newVal){
+        //验证密码是否可以明文
+        if(newVal.length>0){
+          this.isShowEye=true
+        }else if (newVal.length===0){
+          this.isShowEye=false
+        }
+        //验证密码
+        if(this.Regex.isPurePassword(newVal)){
+          this.isPaw = true
+          if(this.Regex.isUserName(this.loginFormInline.user))this.isAccount = true
+          if(this.isAccount)this.loginBtnAvailable=true
+        }else {
+          this.isPaw = false
+          this.loginBtnAvailable=false
+        }
+      },
+      'loginFormInline.username':function(newVal){
+        //验证密码
+        if(this.Regex.isUserName(newVal)){
+          this.isAccount = true
+          if(this.Regex.isPurePassword(this.loginFormInline.password))this.isPaw = true
+          if(this.isPaw)this.loginBtnAvailable=true
+        }else {
+          this.isAccount = false
+          this.loginBtnAvailable=false
+        }
+      }
     }
   }
 </script>
@@ -185,5 +274,30 @@
   .passwordEye{
     width: 16px;
     height: 11px
+  }
+  .loginButton{
+    width:300px;
+    height:48px;
+    margin: 30% auto 0 auto;
+  }
+  .loginNoBtn{
+    width: 100%;
+    height: 100%;
+    background:rgba(156,161,169,1);
+    border-radius:12px;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 15px
+  }
+  .loginBtn{
+    width: 100%;
+    height: 100%;
+    background:rgba(11,173,71,1);
+    border-radius:12px;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 15px
   }
 </style>

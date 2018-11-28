@@ -2,21 +2,30 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import * as axios from "axios";
+import mRegex from './utils/regex'
+import Toast from './components/toast/index'
+import Qs from 'qs'
 
 Vue.use(Toast)
 
-const SERVER_URL = 'http://www.wanandroid.com';// 140测试服务器
+const SERVER_URL = '/api';// 服务器
 
 let instance = axios.create({
   baseURL:SERVER_URL,
   timeout:20000,
   headers:{
-
-  }
+  },
+  transformRequest:[function (data) {
+      return Qs.stringify({
+        ...data
+      })
+  }]
 });
+
 
 Vue.config.productionTip = false
 Vue.prototype.$http = instance;
+Vue.prototype.Regex = mRegex;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
