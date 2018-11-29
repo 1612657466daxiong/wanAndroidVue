@@ -4,9 +4,13 @@ import router from './router'
 import * as axios from "axios";
 import mRegex from './utils/regex'
 import Toast from './components/toast/index'
+import  VueAwesomeSwiper from 'vue-awesome-swiper'
+import  'swiper/dist/css/swiper.css'
+
 import Qs from 'qs'
 
 Vue.use(Toast)
+Vue.use(VueAwesomeSwiper)
 
 const SERVER_URL = '/api';// 服务器
 

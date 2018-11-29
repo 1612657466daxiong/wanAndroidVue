@@ -1,16 +1,25 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import Login from '@/pages/Login'
+import Login from '../pages/Login'
+import Home from '@/pages/Home'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+
     {
-      path: '/',
-      name: 'login',
-      component:Login
-    }
+      path:'/index',
+      name:'index',
+      component:Home,
+
+    },
+    {
+      path: '/Login',
+      name: 'Login',//登录
+      component:{
+        app:resolve=>require(['../pages/Login.vue'],resolve)
+      }
+    },
   ]
 })
