@@ -1,14 +1,16 @@
 <template>
   <div class="swiper-box" ref="swiperBox"  >
-    <swiper class="swiper_container" :options="swiperOption" ref="mySwiper"  >
-        <swiper-slide v-for="(item,index) in listImage" :key="index" >
+    <swiper class="swiper_container" v-if="listImage.length>0" :options="swiperOption" ref="mySwiper"  >
+        <swiper-slide v-for="(item,index) in listImage" :key="index">
           <div>
-            <img class="swiper-image" :src="item.url" :alt="item.name" >
+            <img class="swiper-image" :src="item.imagePath" :alt="item.title" >
           </div>
         </swiper-slide>
-      <div class="swiper-pagination swiper-pagination-fraction" slot="pagination" ref="swiperFraction"></div>
+      <!--<div class="swiper-pagination swiper-pagination-fraction" slot="pagination" ref="swiperFraction"></div>-->
     </swiper>
-    <div ref="bottom_text" id="span_ceshi" class="float_span"  ></div>
+    <div ref="bottom_text" id="span_ceshi" class="float_span"  >
+      <!--<span style="color:white; position: absolute;bottom: 0px;right: 0px" id="span_count" ></span>-->
+    </div>
   </div>
 
 </template>
@@ -24,11 +26,11 @@
     data() {
       return {
         listImage:[
-          {name:"Android1", url:require('../assets/login/Androidbackground.jpg')},
-          {name:"Android2",url:require('../assets/login/androidroot.jpg')},
-          {name:"Android3", url:require('../assets/login/Androidbackground.jpg')},
-          {name:"Android4",url:require('../assets/login/androidroot.jpg')},
-          {name:"Android5", url:require('../assets/login/Androidbackground.jpg')},
+          // {title:"Android1", imagePath:require('../assets/login/Androidbackground.jpg')},
+          // {title:"Android2",imagePath:require('../assets/login/androidroot.jpg')},
+          // {title:"Android3", imagePath:require('../assets/login/Androidbackground.jpg')},
+          // {title:"Android4",imagePath:require('../assets/login/androidroot.jpg')},
+          // {title:"Android5", imagePath:require('../assets/login/Androidbackground.jpg')},
         ],
         swiperOption:{
 
@@ -37,7 +39,7 @@
           grabCursor: true,
           autoHeight:true,
           setWrapperSize:true,
-          loop:2000,
+          loop:true,
           autoplayDisableOnInteraction:true,
           observeParents:true,
           direction:'horizontal',
@@ -47,15 +49,17 @@
           },
           on:{
             slideChangeTransitionEnd: function(){
-
               let  i =this.activeIndex;
               if(i>window._app.listImage.length){
-                i = i%window._app.listImage.length -1
+                i = i%(window._app.listImage.length)-1
               }else {
                 i= i-1
               }
+
               var  r =document.getElementById("span_ceshi");
-              r.innerText=window._app.listImage[i].name
+              r.innerText=window._app.listImage[i].title
+              // var b = document.getElementById("span_count");
+              // b.innerText=i+'/'+ window._app.listImage.length
             },
 
           }
@@ -64,29 +68,35 @@
     },
 
     computed:{
-      swiper(){
-        return this.$refs.mySwiper.swiper;
-      },
+      // swiper(){
+      //   return this.$refs.mySwiper.swiper;
+      // },
     },
     mounted(){
 
-      this.getLoginHeight();
-      console.log('this is current swiper instance object', this.swiper)
-      this.swiper.slideTo(1,1000,false)
+      // this.getLoginHeight();
+      // this.swiper.slideTo(1,1000,false)
 
     },
     created(){
       window._app = this;
+      this.getBanner();
     },
     methods:{
-      getLoginHeight(){
-        this.$refs.swiperFraction.style.marginLeft = (document.documentElement.clientWidth-this.$refs.swiperFraction.style.width-100)+"px"
-      },
-      setBottomText(){
-        // this.$refs.bottom_text.
+      // getLoginHeight(){
+      //   // this.$refs.swiperFraction.style.marginLeft = (document.documentElement.clientWidth-this.$refs.swiperFraction.style.width-100)+"px"
+      // },
+      getBanner(){
+        let that=this;
+        this.$http.get('/banner/json').then(function (res) {
+         that.listImage = res.data.data;
+        })
       }
   },
+  watch:{
 
+
+  }
   }
 </script>
 
