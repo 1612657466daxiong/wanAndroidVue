@@ -1,5 +1,6 @@
 <template>
   <div class="swiper-box" ref="swiperBox"  >
+    <m-header title="首页" fixed bg></m-header>
     <swiper class="swiper_container" v-if="listImage.length>0" :options="swiperOption" ref="mySwiper"  >
         <swiper-slide v-for="(item,index) in listImage" :key="index">
           <div>
@@ -46,8 +47,10 @@
 <script>
   import {swiper,swiperSlide} from 'vue-awesome-swiper'
    import scroll from '../components/scroll/components/scroll/scroll'
+   import mHeader from '../components/header'
   export default {
     components: {
+      mHeader,
       swiper,
       swiperSlide,
       scroll
@@ -111,7 +114,7 @@
       //   return this.$refs.mySwiper.swiper;
       // },
       listHeight: function() {
-        return (document.documentElement.clientHeight - 200 ) + 'px;'
+        return (document.documentElement.clientHeight - 200-64 ) + 'px;'
       },
       /**
        * Scroll配置

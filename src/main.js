@@ -12,6 +12,7 @@ import Qs from 'qs'
 Vue.use(Toast)
 Vue.use(VueAwesomeSwiper)
 
+
 const SERVER_URL = '/api';// 服务器
 
 let instance = axios.create({

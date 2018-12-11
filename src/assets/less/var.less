@@ -1,0 +1,54 @@
+//APP默认颜色
+@defaultColor:#161616;
+//header
+@headerBg:@defaultColor;
+@headerDefaultColor:rgb(73,73,73);
+@headerBorderColor:#e4e4e4;
+//tabbar
+@tabbarBorderColor:#e4e4e4;
+@tabbarActiveColor: @defaultColor;
+
+.flex-layout-block{
+  display: flex;
+  display: -webkit-flex;
+  &.align-center{
+    align-items: center;
+  }
+  &.justify-content-center{
+    justify-content: center;
+  }
+}
+
+.flex-layout-inline-block{
+  display: inline-flex;
+  display: -webkit-inline-flex;
+  &.align-center{
+    align-items: center;
+  }
+  &.justify-content-center{
+    justify-content: center;
+  }
+}
+/*修改iview组件样式*/
+.set-iview-component{
+  &.ivu-btn{
+    padding-top: initial;
+    padding-bottom: initial;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+}
+
+/*多行全显示文字并自动换行样式*/
+.multi-lines-text{
+  white-space: normal;//空格合并、自动换行、换行符不生效
+  word-wrap: break-word;//长单词一行显示不完才拆分
+  overflow-wrap: break-word;
+}
+
+.single-line-ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
