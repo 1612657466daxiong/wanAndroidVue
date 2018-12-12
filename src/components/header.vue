@@ -8,7 +8,7 @@
         </div>
         <slot name="left"></slot>
       </div>
-      <h1 class="m-header-title" v-text="title"></h1>
+      <h5 class="m-header-title" v-text="title"></h5>
       <div class="m-header-button is-right">
         <slot name="right"></slot>
       </div>

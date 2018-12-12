@@ -1,19 +1,18 @@
 <template>
-  <div class="swiper-box" ref="swiperBox"  >
-    <m-header title="首页" fixed bg></m-header>
+  <div class="swiper-box"  >
+    <m-header title="wanAndroid" fixed bg></m-header>
     <swiper class="swiper_container" v-if="listImage.length>0" :options="swiperOption" ref="mySwiper"  >
         <swiper-slide v-for="(item,index) in listImage" :key="index">
-          <div>
-            <img class="swiper-image" :src="item.imagePath" :alt="item.title" >
+          <div >
+            <img class="swiper-image" :src="item.imagePath" :alt="item.title" vspace="0px">
           </div>
         </swiper-slide>
       <!--<div class="swiper-pagination swiper-pagination-fraction" slot="pagination" ref="swiperFraction"></div>-->
     </swiper>
-    <div ref="bottom_text" id="span_ceshi" class="float_span"  >
-      <!--<span style="color:white; position: absolute;bottom: 0px;right: 0px" id="span_count" ></span>-->
+    <div ref="bottom_text" class="float_span">
+      <span  id="span_ceshi" style="color:white;vertical-align: center;position: absolute;bottom: 5px;margin-left: 20px" ></span>
     </div>
-    <div :style="'height:'+listHeight" style="overflow: hidden;margin-top: 10px">
-
+    <div :style="'height:'+listHeight" style="overflow: hidden;margin: 0px;width: 100%">
       <scroll ref="scroll"
               :data="homeArticleList"
               :scrollbar="scrollbarObj"
@@ -24,22 +23,23 @@
               style="background: #ffffff;">
         <div v-if="homeArticleList.length" v-for="(item,index) in homeArticleList" :key="index">
             <div class="homeItemBg"
-                 style="padding: 4px;min-height: 100px;border-radius: 5px;margin-top: 10px;display: block;background: #f5f5f5" >
-              <div style="width: 100%;display: flex;padding: 5px 5px 5px 5px;margin-right: 5px">
+                 style="padding: 4px;min-height: 100px;border-radius: 5px;margin-top: 10px;margin-left:5px;margin-right:5px;display: block;background: #f5f5f5" >
+              <div style="width: 100%;display: flex;padding: 5px 5px 5px 5px;">
                 <div style="height: 10px;width: 10px;border-radius: 5px;background: darkcyan;margin: auto 0" ></div>
                 <p style="padding: 0;margin: 0 0 0 5px;font-size: 14px;font-family: 'KaiTi';color: #666666">{{item.author}}</p>
-                <p style="display: inline-block;position: absolute;right: 5px;margin: auto 0;color: darkseagreen;font-size: 14px;">{{item.chapterName}}/{{item.superChapterName}}</p>
+                <p style="display: inline-block;position: absolute;right: 5px;margin: auto 0;color: darkseagreen;font-size: 14px;margin-right: 5px">{{item.chapterName}}/{{item.superChapterName}}</p>
               </div>
               <p style="text-align: center;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;padding: 0 10px;color: #333333;">{{item.title}}</p>
               <div style="width: 100%;">
                 <div id="heart" style="margin-left: 10px;" v-if="item.collect"></div>
-                <p style="position: absolute;right: 5px;padding: 0;margin: 0;font-size: 14px;color: #666666">{{item.niceDate}}</p>
+                <p style="position: absolute;right: 5px;padding: 0;margin: 0 5px 0 0;font-size: 14px;color: #666666">{{item.niceDate}}</p>
               </div>
             </div>
         </div>
       </scroll>
 
     </div>
+    <mBottomBar></mBottomBar>
   </div>
 
 </template>
@@ -48,12 +48,14 @@
   import {swiper,swiperSlide} from 'vue-awesome-swiper'
    import scroll from '../components/scroll/components/scroll/scroll'
    import mHeader from '../components/header'
+  import mBottomBar from "../components/tabbar/BottomBar.vue";
   export default {
     components: {
       mHeader,
       swiper,
       swiperSlide,
-      scroll
+      scroll,
+      mBottomBar
     },
 
 
@@ -70,13 +72,11 @@
 
         currentPage:1,
 
-        hoverIndex:-1,
-        clickIndex:-1,
-
         listImage:[],
         homeArticleList:[],
         swiperOption:{
           notNextTick:true,
+          effect : 'coverflow',
           autoplay:true,
           grabCursor: true,
           autoHeight:true,
@@ -114,7 +114,7 @@
       //   return this.$refs.mySwiper.swiper;
       // },
       listHeight: function() {
-        return (document.documentElement.clientHeight - 200-64 ) + 'px;'
+        return (document.documentElement.clientHeight-200-50-64) + 'px;'
       },
       /**
        * Scroll配置
@@ -244,10 +244,13 @@
 </script>
 
 <style>
-  img{
+  .swiper-image{
     height: 200px;
     width: 100%;
     align-content: center;
+    background-size: 100% 100%;
+
+    background-repeat: no-repeat;
   }
   .swiper_pagination_content{
     height: 50px;
@@ -257,8 +260,8 @@
   }
   .swiper-box{
     clear: both;
-    height: 200px;
-    position: relative;
+    height: 100%;
+    width: 100%;
     padding: 0;
     margin: 0;
   }
@@ -269,7 +272,6 @@
     font-size: 14px;
     color: white;
     position: absolute;
-    padding-left: 20px;
     margin-top: -30px;
     z-index: 999;
     vertical-align: middle;
