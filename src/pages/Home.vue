@@ -9,7 +9,7 @@
         </swiper-slide>
       <!--<div class="swiper-pagination swiper-pagination-fraction" slot="pagination" ref="swiperFraction"></div>-->
     </swiper>
-    <div ref="bottom_text" class="float_span">
+    <div ref="bottom_text" v-if="listImage && listImage.length>0" class="float_span">
       <span  id="span_ceshi" style="color:white;vertical-align: center;position: absolute;bottom: 5px;margin-left: 20px" ></span>
     </div>
     <div :style="'height:'+listHeight" style="overflow: hidden;margin: 0px;width: 100%">

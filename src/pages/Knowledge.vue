@@ -1,18 +1,18 @@
 <template>
   <div class="knowledgeContent">
+    <m-header title="wanAndroid" fixed bg></m-header>
 
-
-  <div :style="'height:'+listHeight" style="overflow: hidden;margin-top: 10px">
+  <div :style="'height:'+listHeight" style="overflow: hidden;background: #f5f5f5;padding-right: 5px; ">
     <scroll ref="scroll"
             :data="knowledgeList"
             :scrollbar="scrollbarObj"
-            :pullDownRefresh="pullDownRefreshObj"
-            :pullUpLoad="pullUpLoadObj"
-            @pullingDown="onPullingDown"
-            @pullingUp="onPullingUp"
-            style="background: #ffffff;">
+
+            style="background: #f5f5f5;">
       <div v-if="knowledgeList.length" v-for="(item,index) in knowledgeList" :key="index">
-          <div style="height: 100px;width: 100%">{{item.name}}</div>
+        <div style="height: 50px;width: 100%;margin: 10px 5px 0;background: white">
+
+          <div style="width: 100%">{{item.name}}</div>
+        </div>
       </div>
     </scroll>
 
@@ -22,11 +22,13 @@
 </template>
 
 <script>
+  import mHeader from '../components/header'
   import mBottomBar from "../components/tabbar/BottomBar.vue";
   import scroll from '../components/scroll/components/scroll/scroll'
     export default {
         name: "knowledge",
       components:{
+        mHeader,
         scroll,
         mBottomBar
       },
@@ -44,31 +46,31 @@
             currentPage:1,
 
             knowledgeList:[
-              {
-                children: [
-                  {
-                    children: [],
-                    courseId: 13,
-                    id: 60, // id会在查看该目录下所有文章时有用
-                    name: "Android Studio相关", // 子名称
-                    order: 1000,
-                    parentChapterId: 150,
-                    visible: 1
-                  },
-                ],
-                courseId: 13,
-                id: 150,
-                name: "开发环境", // 一级的名称
-                order: 1,
-                parentChapterId: 0,
-                visible: 1
-              }
+              // {
+              //   children: [
+              //     {
+              //       children: [],
+              //       courseId: 13,
+              //       id: 60, // id会在查看该目录下所有文章时有用
+              //       name: "Android Studio相关", // 子名称
+              //       order: 1000,
+              //       parentChapterId: 150,
+              //       visible: 1
+              //     },
+              //   ],
+              //   courseId: 13,
+              //   id: 150,
+              //   name: "开发环境", // 一级的名称
+              //   order: 1,
+              //   parentChapterId: 0,
+              //   visible: 1
+              // }
             ]
           }
       },
       computed:{
         listHeight: function() {
-          return (document.documentElement.clientHeight -49) + 'px;'
+          return (document.documentElement.clientHeight -49-64) + 'px;'
         },
         /**
          * Scroll配置
@@ -89,7 +91,17 @@
           } : false
         }
       },
+      mounted(){
+        this.getKnowledgeData();
+      },
       methods:{
+          getKnowledgeData(){
+            let that=this;
+            this.$http.get('/tree/json').then(function (res) {
+              that.knowledgeList = res.data.data;
+              console.log(res.data.data)
+            })
+          },
         /**
          * 重置Scroll
          */
