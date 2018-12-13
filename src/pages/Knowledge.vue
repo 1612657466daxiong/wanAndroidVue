@@ -1,6 +1,6 @@
 <template>
   <div class="knowledgeContent">
-    <m-header title="wanAndroid" fixed bg></m-header>
+    <m-header title="知识体系" fixed bg></m-header>
 
   <div :style="'height:'+listHeight" style="overflow: hidden;background: #f5f5f5;padding-right: 5px; ">
     <scroll ref="scroll"
@@ -9,9 +9,17 @@
 
             style="background: #f5f5f5;">
       <div v-if="knowledgeList.length" v-for="(item,index) in knowledgeList" :key="index">
-        <div style="height: 50px;width: 100%;margin: 10px 5px 0;background: white">
+        <div style="width: 100%;margin: 10px 5px 0;background: white;padding: 10px">
 
-          <div style="width: 100%">{{item.name}}</div>
+          <div style="width: 100%;font-size: 16px;font-weight: bold">{{item.name}}</div>
+          <div style="margin: 0 0 0 0;overflow: hidden">
+            <ul class="childrenListView" style="content: none;list-style-type: none;padding: 0;display: inline-flex;flex-flow: row;flex-wrap: wrap;overflow: hidden" >
+              <li v-for="child in item.children" v-if="item.children && item.children.length>0" style="display:block;margin-top: 3px;margin-left: 5px;padding: 3px;border-radius: 3px;height: min-content;width: min-content;overflow: hidden"
+              :style="{'background':getRundomColor()}">
+                <div style="display: inline-flex;text-align: start;overflow: hidden;white-space: nowrap; ">{{child.name}}</div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </scroll>
@@ -48,7 +56,8 @@
             knowledgeList:[
               // {
               //   children: [
-              //     {
+              //
+              //   {
               //       children: [],
               //       courseId: 13,
               //       id: 60, // id会在查看该目录下所有文章时有用
@@ -65,6 +74,21 @@
               //   parentChapterId: 0,
               //   visible: 1
               // }
+            ],
+            colorArray:[
+              '#ffff66',
+              '#ffccff',
+              '#ff9900',
+              '#ff3300',
+              '#ccff66',
+              '#cc66cc',
+              '#99ccff',
+              '#66cc00',
+              '#9999ff',
+              '#66ccff',
+              '#00cc66',
+              '#ff0000',
+              '#996600',
             ]
           }
       },
@@ -95,6 +119,10 @@
         this.getKnowledgeData();
       },
       methods:{
+          getRundomColor(){
+            let varIndex = Math.floor(Math.random()*this.colorArray.length);
+            return this.colorArray[varIndex]
+          },
           getKnowledgeData(){
             let that=this;
             this.$http.get('/tree/json').then(function (res) {
@@ -137,5 +165,10 @@
 <style scoped>
   .knowledgeContent{
     height: 200px;
+  }
+  .childrenListView :after{
+    content: "";
+    display: table;
+    clear: both;
   }
 </style>

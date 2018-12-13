@@ -3,9 +3,10 @@
     <div class="statusBar"></div>
     <header class="m-header" :class="{'is-bg':bg,'is-fixed':fixed}">
       <div class="m-header-button is-left" v-show="leftShow">
-        <div v-if="showBackBtn" class="backBtn" @click.stop="goBack()" style="height: 100%; width: 50%;">
-          <img class="m-icon-img"  src="../assets/ic_bar_back_white.png"/>
-        </div>
+        <!--<div v-if="showBackBtn" class="backBtn" @click.stop="goBack()" style="height: 100%; width: 50%;">-->
+          <!--<img class="m-icon-img"  src="../assets/ic_bar_back_white.png"/>-->
+        <!--</div>-->
+        <div class="pacman"></div>
         <slot name="left"></slot>
       </div>
       <h5 class="m-header-title" v-text="title"></h5>
@@ -150,6 +151,18 @@
       top: 0;
       z-index: 999;
     }
+  }
+  .pacman {
+    width: 0;
+    height: 0;
+    border-right: 10px solid #f39c12;
+    border-top: 10px solid #f39c12;
+    border-left: 10px solid transparent;
+    border-bottom: 10px solid #f39c12;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
   }
 
 </style>

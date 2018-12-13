@@ -12,7 +12,6 @@ export default {
   name: 'App',
   data () {
     return {
-      isWeb: false, // 是否是web端
     }
   },
   mounted:function(){
