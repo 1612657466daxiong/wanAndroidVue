@@ -35,4 +35,9 @@ export default {
     height: 100%;
     width: 100%;
   }
+html,body,#app{
+
+  height: 100%;
+
+}
 </style>
