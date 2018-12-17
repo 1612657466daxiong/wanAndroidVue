@@ -1,7 +1,7 @@
 <template>
   <siderbar>
     <div class="knowledgeContent" slot="content">
-      <m-header title="知识体系" fixed bg></m-header>
+      <m-header v-on:onMenuLeftClick="onMenuleft()" title="知识体系" fixed bg ></m-header>
 
       <div :style="'height:'+listHeight" style="overflow: hidden;background: #f5f5f5;padding-right: 5px; ">
         <scroll ref="scroll"
@@ -15,7 +15,7 @@
               <div style="width: 100%;font-size: 16px;font-weight: bold">{{item.name}}</div>
               <div style="margin: 0 0 0 0;overflow: hidden">
                 <ul class="childrenListView" style="content: none;list-style-type: none;padding: 0;display: inline-flex;flex-flow: row;flex-wrap: wrap;overflow: hidden" >
-                  <li v-for="child in item.children" v-if="item.children && item.children.length>0" style="display:block;margin-top: 3px;margin-left: 5px;padding: 3px;border-radius: 3px;height: min-content;width: min-content;overflow: hidden"
+                  <li v-for="child in item.children" v-if="item.children && item.children.length>0" style="display:block;margin-top: 3px;margin-left: 5px;padding: 3px;border-radius: 3px;height: min-content;width: min-content;overflow: hidden;word-wrap: break-word"
                       :style="{'background':getRundomColor()}">
                     <div style="display: inline-flex;text-align: start;overflow: hidden;white-space: nowrap; ">{{child.name}}</div>
                   </li>
@@ -28,9 +28,17 @@
       </div>
       <mBottomBar style="position: absolute;bottom: 0;"></mBottomBar>
     </div>
-    <div slot="menu">
-      <div style="font-size: 20px">测试数据</div>
-    </div>
+    <!--<div slot="menu" style="height: 100%;background: #f5f5f5">-->
+      <!--<div style="height: 100%;width: 100%;">-->
+        <!--<div class="menu-left" style=";height: 200px;width: 100%;">-->
+        <!--</div>-->
+        <!--<div style="display: flex;margin-top: 20px;padding-left: 10px;background: #e4e4e4;padding-top: 5px;padding-bottom: 5px" @click="login()">-->
+          <!--<img src="../assets/logo.png" style="display: inline-block;height: 22px;width: 22px;"/>-->
+          <!--<p style="padding: 0;margin:0 0 0 10px">登录</p>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <sidermenu slot="menu"> </sidermenu>
   </siderbar>
 
 </template>
@@ -40,10 +48,12 @@
   import mBottomBar from "../components/tabbar/BottomBar.vue";
   import scroll from '../components/scroll/components/scroll/scroll'
   import siderbar from '../components/siderbar/siderbar'
+  import sidermenu from '../components/siderbar/siderbarMenu'
     export default {
         name: "knowledge",
       components:{
         siderbar,
+        sidermenu,
         mHeader,
         scroll,
         mBottomBar
@@ -62,26 +72,6 @@
             currentPage:1,
 
             knowledgeList:[
-              // {
-              //   children: [
-              //
-              //   {
-              //       children: [],
-              //       courseId: 13,
-              //       id: 60, // id会在查看该目录下所有文章时有用
-              //       name: "Android Studio相关", // 子名称
-              //       order: 1000,
-              //       parentChapterId: 150,
-              //       visible: 1
-              //     },
-              //   ],
-              //   courseId: 13,
-              //   id: 150,
-              //   name: "开发环境", // 一级的名称
-              //   order: 1,
-              //   parentChapterId: 0,
-              //   visible: 1
-              // }
             ],
             colorArray:[
               '#ffff66',
@@ -127,6 +117,9 @@
         this.getKnowledgeData();
       },
       methods:{
+        onMenuleft(){
+
+        },
           getRundomColor(){
             let varIndex = Math.floor(Math.random()*this.colorArray.length);
             return this.colorArray[varIndex]

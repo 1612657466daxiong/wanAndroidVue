@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '../pages/Login'
+import Login from '@/pages/Login'
 import Home from '@/pages/Home'
 import Knowledge from '@/pages/Knowledge'
 import Navigation from '@/pages/Navigation'
@@ -35,11 +35,9 @@ export default new Router({
     },
 
     {
-      path: '/Login',
+      path: '/login',
       name: 'Login',//登录
-      component:{
-        app:resolve=>require(['../pages/Login.vue'],resolve)
-      }
+      component:Login
     },
   ]
 })

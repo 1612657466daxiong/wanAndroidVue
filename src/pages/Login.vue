@@ -5,7 +5,7 @@
       <p class="slogan">洋参-Android开发社区</p>
     </div>
     <div>
-      <input class="accountClass" maxlength="30" v-text="doraemon" type="text" v-model="loginFormInline.username" placeholder="请输入账号">
+      <input class="accountClass" maxlength="30" v-text="" type="text" v-model="loginFormInline.username" placeholder="请输入账号">
       <div class="passwordContent">
         <input class="passwordClass" :type="viewPassword" v-model="loginFormInline.password" placeholder="请输入密码" maxlength="16">
         <img v-if="isShowEye" :src="theEye" class="passwordEye" @click="handleEyeAvailable"/>
@@ -71,7 +71,6 @@
         }
       },
       handleSubmit(){
-        let that = this;
         this.$Toast.loading("登录")
         let sendInfo = {
           username:this.loginFormInline.username,
@@ -120,10 +119,29 @@
               'Content-Type': 'application/x-www-form-urlencoded'
             }
           }).then((response)=>{
-            console.log(response);
+
             if(response.status == 200){
-              console.log(response.data);
-              let slatKey = String(response.data.data.slatKey);
+              let UserInfo = response.data.data;
+              // var ca= response.cookie.split(';')
+              // console.log("cookie response "+response.cookie);
+              // var ca = document.cookie.split(';');
+              // for(var i =0;i<ca.length;i++){
+              //   var c = ca[i];
+              //   console.log(i+" cookie :"+c);
+              //   while(c.charAt(0)=='')c=c.substring(1);
+              //   if (c.indexOf('token_pass')!=-1){
+              //     console.log("token"+c.substring(name.length, c.length));
+              //     break;
+              //   }
+              // }
+              UserInfo.token = Regex.getCookie('token_pass');
+              UserInfo.username = Regex.getCookie('loginUserName');
+              UserInfo = JSON.stringify(UserInfo);
+
+              window.sessionStorage.setItem('UserInfo',UserInfo);
+
+              // console.log("response data "+ response.data.data);
+              // let slatKey = String(response.data.data.slatKey);
               // sendInfo.password = that.md5(slatKey.slice(0,8) + sendInfo.password + slatKey.slice(8))
               resolve(sendInfo)
               that.loginResult("登录成功",1)

@@ -7,11 +7,12 @@ import Toast from './components/toast/index'
 import  'swiper/dist/css/swiper.css'
 import  VueAwesomeSwiper from 'vue-awesome-swiper'
 
+
 import Qs from 'qs'
 
 Vue.use(Toast)
 Vue.use(VueAwesomeSwiper)
-
+axios.defaults.withCredentials = true
 
 const SERVER_URL = '/api';// 服务器
 
@@ -25,6 +26,21 @@ let instance = axios.create({
         ...data
       })
   }]
+});
+instance.interceptors.request.use(function(res){
+  if(res.url.includes('login')){
+    return res;
+  }
+  console.log( "UserInfo  "+ JSON.parse(window.sessionStorage.getItem('UserInfo')));
+  if(window.sessionStorage.getItem('UserInfo')&&JSON.parse(window.sessionStorage.getItem('UserInfo'))!==null){
+    let token = JSON.parse(window.sessionStorage.getItem('UserInfo')).token;
+    mRegex.setCookie('token_pass',token)
+    let userName = JSON.parse(window.sessionStorage.getItem('UserInfo')).username;
+    mRegex.setCookie('loginUserName',userName)
+  }
+  return res;
+},function(error){
+  return Promise.reject(error)
 });
 
 

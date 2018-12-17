@@ -2,7 +2,7 @@
   <div>
     <div class="statusBar"></div>
     <header class="m-header" :class="{'is-bg':bg,'is-fixed':fixed}">
-      <div class="m-header-button is-left" v-show="leftShow">
+      <div class="m-header-button is-left" v-show="leftShow" @click="onMenuShow()">
         <!--<div v-if="showBackBtn" class="backBtn" @click.stop="goBack()" style="height: 100%; width: 50%;">-->
           <!--<img class="m-icon-img"  src="../assets/ic_bar_back_white.png"/>-->
         <!--</div>-->
@@ -53,9 +53,18 @@
       overWriteBackAction: { // 是否重写返回方法
         type: Boolean,
         default: false
+      },
+      overWriteMenuShow:{
+        type:Boolean,
+        default:false
       }
     },
     methods: {
+      onMenuShow(){
+        if(this.overWriteMenuShow){
+          this.$emit('onMenuLeftClick')
+        }
+      },
       goBack() {
         if (this.overWriteBackAction) {
           this.$emit('backBtnClicked')

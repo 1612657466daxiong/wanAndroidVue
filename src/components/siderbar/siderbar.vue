@@ -1,20 +1,22 @@
 <template>
-    <div class="sidebar" >
+    <div class="sidebar">
         <div class="sidebar-menu"
              :class="transitionClass"
-             :style="wrapStyle">
+             :style="wrapStyle"
+        style="background: #f5f5f5">
           <slot name="menu">
           </slot>
         </div>
         <div class="sidebar-content"
              :class="transitionClass"
              :style="contentStyle"
-             style="height: 100%"
+             style="height: 100%;background: #f5f5f5"
              @touchstart="touchstart"
              @touchmove="touchmove"
              @touchend="touchend">
           <slot name="content">
           </slot>
+
         </div>
     </div>
 
@@ -25,12 +27,12 @@
         name: "siderbar",
       components:{
       },
-      props: {
+      props: {//宽度
         width: {
           type: String,
           default: '250'
         },
-        ratio: {
+        ratio: {//移动的比例
           type: Number,
           default: 2
         }
@@ -57,19 +59,20 @@
         wrapStyle () {
           let style = {
             width: `${this.width}px`,
-            left: `-${this.width / this.ratio}px`,
-            transform: `translate3d(${this.move.x / this.ratio}px, 0px, 0px) `
+            left: `-${this.width }px`,
+            transform: `translate3d(${this.move.x }px, 0px, 0px) `
           }
           return style
         },
         contentStyle () {
           let style = {
-            transform: `translate3d(${this.move.x}px, 0px, 0px) scale(${this.move.x /this.width +1})`,
+            transform: `translate3d(${this.move.x}px, 0px, 0px) scale(${((this.width-this.move.x) /this.width)<=0.85?0.85:((this.width-this.move.x) /this.width)})`,
           }
           return style
         }
       },
       methods: {
+
         touchstart (e) {
           this.oldPoint.x = e.touches[0].pageX
           this.oldPoint.y = e.touches[0].pageY
@@ -122,6 +125,8 @@
     height:100%;
     overflow: hidden;
   }
+
+
   .sidebar-menu{
     @include one-screen;
     &-wrap, &-content{
@@ -134,7 +139,9 @@
   }
   .sidebar{
     height: 100%;
-
+    background: -webkit-linear-gradient(
+    left,#3399cc,#33ccff,#e4e4e4
+    );
   }
   /*.sidebar-content{*/
     /*animation: out.5s;*/

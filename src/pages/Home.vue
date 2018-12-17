@@ -287,7 +287,7 @@
     width: 10px;
     height: 18px;
     position: absolute;
-    background: red;
+    background: #ff3300;
     left: 10px;
     top: 0;
     -webkit-border-radius: 45px 45px 0 0;
