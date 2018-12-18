@@ -70,7 +70,7 @@
         pullUpLoad: true,
         pullUpLoadThreshold: -50,
 
-        currentPage:1,
+        currentPage:0,
 
         listImage:[],
         homeArticleList:[],
@@ -172,7 +172,7 @@
       onPullingDown() {
         console.log('pulling down and load data')
         setTimeout(() => {
-          this.currentPage = 1
+          this.currentPage = 0
           this.getHomeData()
         }, 500)
       },
@@ -189,7 +189,7 @@
         let that = this;
         this.$http.get(`/article/list/${this.currentPage}/json`).then(function (res) {
           console.log(res.data);
-          if (that.currentPage === 1){
+          if (that.currentPage === 0){
             if (res.data.data.datas){
               that.homeArticleList = res.data.data.datas;
             }else {
