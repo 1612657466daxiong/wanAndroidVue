@@ -40,6 +40,7 @@ instance.interceptors.request.use(function(res){
   }
   return res;
 },function(error){
+  console.log( " error  "+ error);
   return Promise.reject(error)
 });
 

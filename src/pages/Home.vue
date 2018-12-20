@@ -31,7 +31,8 @@
               </div>
               <p style="text-align: center;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;padding: 0 10px;color: #333333;">{{item.title}}</p>
               <div style="width: 100%;">
-                <div id="heart" style="margin-left: 10px;" v-if="item.collect"></div>
+                <div id="heart" style="margin-left: 10px;" v-if="item.collect" @click="itemCollectArticle(item)"></div>
+                <div id="heart1" style="margin-left: 10px;" v-if="!item.collect" @click="itemCollectArticle(item)"></div>
                 <p style="position: absolute;right: 5px;padding: 0;margin: 0 5px 0 0;font-size: 14px;color: #666666">{{item.niceDate}}</p>
               </div>
             </div>
@@ -151,6 +152,25 @@
       // getLoginHeight(){
       //   // this.$refs.swiperFraction.style.marginLeft = (document.documentElement.clientWidth-this.$refs.swiperFraction.style.width-100)+"px"
       // },
+      itemCollectArticle(item){
+        if(item.collect){
+           this.cancelCollect(item);
+        }else{
+          this.quitCollect(item);
+        }
+      },
+      cancelCollect(item){
+          this.$http.post(`/lg/uncollect_originId/${item.id}/json`).then(function(res){
+            if(res.data.errorCode === 0)
+            item.collect =false;
+          })
+      },
+      quitCollect(item){
+        this.$http.post(`/lg/collect/${item.id}/json`).then(function(res){
+          if(res.data.errorCode === 0)
+          item.collect =true;
+        })
+      },
       getBanner(){
         let that=this;
         this.$http.get('/banner/json').then(function (res) {
@@ -278,6 +298,7 @@
   }
   #heart {
     position: relative;
+
   }
 
 
@@ -308,6 +329,51 @@
 
 
   #heart:after {
+    left: 0;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform-origin: 100% 100%;
+    -moz-transform-origin: 100% 100%;
+    -ms-transform-origin: 100% 100%;
+    -o-transform-origin: 100% 100%;
+    transform-origin: 100% 100%;
+  }
+  #heart1 {
+    position: relative;
+
+  }
+
+
+
+  #heart1:before,#heart1:after {
+    content: "";
+    width: 10px;
+    height: 18px;
+    position: absolute;
+    background: #ffffff;
+    left: 10px;
+    top: 0;
+    -webkit-border-radius: 45px 45px 0 0;
+    -moz-border-radius: 45px 45px 0 0;
+    border-radius: 45px 45px 0 0;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: 0 100%;
+    -moz-transform-origin: 0 100%;
+    -ms-transform-origin: 0 100%;
+    -o-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+  }
+
+
+
+  #heart1:after {
     left: 0;
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
