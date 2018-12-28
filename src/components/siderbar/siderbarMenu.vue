@@ -7,6 +7,10 @@
         <img src="../../assets/logo.png" style="display: inline-block;height: 22px;width: 22px;"/>
         <p style="padding: 0;margin:0 0 0 10px">登录</p>
       </div>
+      <div style="display: flex;margin-top: 20px;padding-left: 10px;background: #e4e4e4;padding-top: 5px;padding-bottom: 5px" @click="logout()">
+        <img src="../../assets/logo.png" style="display: inline-block;height: 22px;width: 22px;"/>
+        <p style="padding: 0;margin:0 0 0 10px">退出登录</p>
+      </div>
     </div>
   </div>
 </template>
@@ -18,6 +22,15 @@
         login(){
           this.$router.push('/login')
         },
+        logout(){
+          let that = this;
+          this.$http.get(`/user/logout/json`).then(function(res){
+            if(res.data.errorCode === 0){
+              window.sessionStorage.removeItem('UserInfo')
+              that.$router.push('/login')
+            }
+          })
+        }
       }
     }
 </script>

@@ -31,6 +31,9 @@ instance.interceptors.request.use(function(res){
   if(res.url.includes('login')){
     return res;
   }
+  if(res.url.includes('logout')){
+    return res;
+  }
   console.log( "UserInfo  "+ JSON.parse(window.sessionStorage.getItem('UserInfo')));
   if(window.sessionStorage.getItem('UserInfo')&&JSON.parse(window.sessionStorage.getItem('UserInfo'))!==null){
     let token = JSON.parse(window.sessionStorage.getItem('UserInfo')).token;

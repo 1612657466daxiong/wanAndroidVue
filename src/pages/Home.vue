@@ -166,9 +166,13 @@
           })
       },
       quitCollect(item){
+        let that = this;
         this.$http.post(`/lg/collect/${item.id}/json`).then(function(res){
-          if(res.data.errorCode === 0)
-          item.collect =true;
+          if(res.data.errorCode === 0){
+            item.collect =true;
+          }else if(res.data.errorCode === -1001){
+            that.$Toast("请先登录！")
+          }
         })
       },
       getBanner(){
